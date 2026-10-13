@@ -1,0 +1,29 @@
+# NHS raw datasets
+data/landing/incoming/*
+data/landing/processing/*
+data/landing/archive/*
+data/landing/rejected/*
+data/reference/*
+
+# Runtime logs
+logs/*
+*.log
+
+# Credentials and environment files
+.env
+.env.*
+!.env.example
+
+# Visual Studio and SSIS temporary files
+.vs/
+*.dtproj.user
+*.suo
+bin/
+obj/
+
+# Power BI temporary files
+*.pbix.tmp
+
+# Python temporary files
+__pycache__/
+*.pyc
