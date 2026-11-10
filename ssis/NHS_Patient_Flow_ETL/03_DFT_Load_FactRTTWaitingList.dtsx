@@ -1,0 +1,1988 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="10/30/2026 7:42:54 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="MKADESINA"
+  DTS:CreatorName="MKADESINA\mkade"
+  DTS:DTSID="{721EB5A1-AD18-4E50-AAFD-BF7F0FF010C5}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="17.0.1016.0"
+  DTS:LocaleID="2057"
+  DTS:ObjectName="Package1"
+  DTS:PackageType="5"
+  DTS:VersionBuild="54"
+  DTS:VersionGUID="{E6F430D8-998E-4067-B133-29E7EC5EA552}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[MKADESINA\SQL2019.NHS_Patient_Flow_BI.sa]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{32D86A4E-F046-4B1C-BB33-7E04C8789C15}"
+      DTS:ObjectName="MKADESINA\SQL2019.NHS_Patient_Flow_BI.sa">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=MKADESINA\SQL2019;User ID=sa;Initial Catalog=NHS_Patient_Flow_BI;Provider=SQLNCLI11.1;Persist Security Info=True;Application Name=SSIS-Package1-{32D86A4E-F046-4B1C-BB33-7E04C8789C15}MKADESINA\SQL2019.NHS_Patient_Flow_BI.sa;Auto Translate=False;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAGXq61w6YOEWQa62YNcX26QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAaRpUajRFwYNNO85vwX884MiSfPGhPyQofv70ffDO5lAAAAAAOgAAAAAIAACAAAADkvFHK6rxUZ3Tg44pFLU+Tq0DFC7Mcbprdqxwmw1X5KiAAAACdAyoeRcbw5+cSFfRKFd9EeRAFkmrTv0XWMmZmEEpl1EAAAACQmQdKdILDYOaQDrP8pJg2epC7llSX2gnSb11nQzMTcUxGNHl8YoihwYdu4SPCX/YmlhBYgFDg7O14/ewFWQfq</DTS:Password>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:PackageParameters>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{D995788B-2062-406F-8098-3D9099A12190}"
+      DTS:ObjectName="pReportingPeriod">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue">RTT-February-2026</DTS:Property>
+    </DTS:PackageParameter>
+  </DTS:PackageParameters>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{A5160B58-E0D3-46D0-AB5C-4B7C6A3C501E}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="AuditRunID">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{DB6292E7-4163-4770-89D3-0BFFC7290AD1}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="@[$Package::pReportingPeriod]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="vReportingPeriod">
+      <DTS:VariableValue
+        DTS:DataType="8">RTT-February-2026</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Audit Run - Failure"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{FDE8882C-906D-4E8D-8686-2F54D344827E}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Audit Run - Failure"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{32D86A4E-F046-4B1C-BB33-7E04C8789C15}"
+          SQLTask:SqlStatementSource="UPDATE audit.ETL_Run_Log&#xA;SET&#xA;    EndTime = SYSDATETIME(),&#xA;    RunStatus = 'Failed',&#xA;    ErrorMessage = 'SSIS fact load failed.'&#xA;WHERE RunID = ?&#xA;  AND RunStatus = 'Running';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::AuditRunID"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Clear Fact Staging"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{D715D027-EEF8-49F8-AF5F-32160845E4BE}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Clear Fact Staging"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{32D86A4E-F046-4B1C-BB33-7E04C8789C15}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE stg.RTT_FactLoad;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\DFT_Load_FactRTTWaitingList"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{B2E18C13-CF22-4127-A4A8-06FADD5FBAB4}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DFT_Load_FactRTTWaitingList"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimCommissioner"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="LKP_DimCommissioner"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dw].[DimCommissioner]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dw].[DimCommissioner]) [refTable]
+where [refTable].[CommissionerOrgCode] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="CommissionerKey" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="CommissionerOrgCode" dataType="DT_STR" length="30" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="CommissionerOrgName" dataType="DT_STR" length="255" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="CommissionerParentOrgCode" dataType="DT_STR" length="30" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="CommissionerParentName" dataType="DT_STR" length="255" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="CreatedAt" dataType="DT_DBTIMESTAMP2" length="0" precision="0" scale="7" codePage="0"/&gt;&lt;referenceColumn name="UpdatedAt" dataType="DT_DBTIMESTAMP2" length="0" precision="0" scale="7" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\DFT_Load_FactRTTWaitingList\1662:invalid};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimCommissioner.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[MKADESINA\SQL2019.NHS_Patient_Flow_BI.sa]"
+                  connectionManagerRefId="Package.ConnectionManagers[MKADESINA\SQL2019.NHS_Patient_Flow_BI.sa]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimCommissioner.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimCommissioner.Inputs[Lookup Input].Columns[commissioner_org_code]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="8000"
+                      cachedName="commissioner_org_code"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[commissioner_org_code]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">CommissionerOrgCode</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimCommissioner.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\DFT_Load_FactRTTWaitingList\LKP_DimCommissioner.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimCommissioner.Outputs[Lookup Match Output].Columns[CommissionerKey]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\LKP_DimCommissioner.Outputs[Lookup Match Output].Columns[CommissionerKey]"
+                      name="CommissionerKey"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">CommissionerKey</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimCommissioner.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\DFT_Load_FactRTTWaitingList\LKP_DimCommissioner.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimCommissioner.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\DFT_Load_FactRTTWaitingList\LKP_DimCommissioner.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimCommissioner.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\LKP_DimCommissioner.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimCommissioner.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\LKP_DimCommissioner.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimProvider"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="LKP_DimProvider"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dw].[DimProvider]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dw].[DimProvider]) [refTable]
+where [refTable].[ProviderOrgCode] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="ProviderKey" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ProviderOrgCode" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="ProviderOrgName" dataType="DT_WSTR" length="500" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ProviderParentOrgCode" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="ProviderParentName" dataType="DT_WSTR" length="500" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="CreatedAt" dataType="DT_DBTIMESTAMP2" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="UpdatedAt" dataType="DT_DBTIMESTAMP2" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\DFT_Load_FactRTTWaitingList\1660:invalid};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimProvider.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[MKADESINA\SQL2019.NHS_Patient_Flow_BI.sa]"
+                  connectionManagerRefId="Package.ConnectionManagers[MKADESINA\SQL2019.NHS_Patient_Flow_BI.sa]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimProvider.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimProvider.Inputs[Lookup Input].Columns[provider_org_code]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="8000"
+                      cachedName="provider_org_code"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[provider_org_code]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">ProviderOrgCode</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimProvider.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\DFT_Load_FactRTTWaitingList\LKP_DimProvider.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimProvider.Outputs[Lookup Match Output].Columns[ProviderKey]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\LKP_DimProvider.Outputs[Lookup Match Output].Columns[ProviderKey]"
+                      name="ProviderKey"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">ProviderKey</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimProvider.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\DFT_Load_FactRTTWaitingList\LKP_DimProvider.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimProvider.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\DFT_Load_FactRTTWaitingList\LKP_DimProvider.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimProvider.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\LKP_DimProvider.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimProvider.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\LKP_DimProvider.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimReportingPeriod"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="LKP_DimReportingPeriod"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dw].[DimReportingPeriod]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dw].[DimReportingPeriod]) [refTable]
+where [refTable].[ReportingPeriodCode] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="ReportingPeriodKey" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ReportingPeriodCode" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="ReportingMonth" dataType="DT_DBDATE" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="CalendarYear" dataType="DT_I2" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="CalendarMonth" dataType="DT_UI1" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="CreatedAt" dataType="DT_DBTIMESTAMP2" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\DFT_Load_FactRTTWaitingList\1658:invalid};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimReportingPeriod.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[MKADESINA\SQL2019.NHS_Patient_Flow_BI.sa]"
+                  connectionManagerRefId="Package.ConnectionManagers[MKADESINA\SQL2019.NHS_Patient_Flow_BI.sa]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimReportingPeriod.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimReportingPeriod.Inputs[Lookup Input].Columns[reporting_period]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="8000"
+                      cachedName="reporting_period"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[reporting_period]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">ReportingPeriodCode</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimReportingPeriod.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\DFT_Load_FactRTTWaitingList\LKP_DimReportingPeriod.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimReportingPeriod.Outputs[Lookup Match Output].Columns[ReportingPeriodKey]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\LKP_DimReportingPeriod.Outputs[Lookup Match Output].Columns[ReportingPeriodKey]"
+                      name="ReportingPeriodKey"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">ReportingPeriodKey</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimReportingPeriod.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\DFT_Load_FactRTTWaitingList\LKP_DimReportingPeriod.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimReportingPeriod.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\DFT_Load_FactRTTWaitingList\LKP_DimReportingPeriod.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimReportingPeriod.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\LKP_DimReportingPeriod.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimReportingPeriod.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\LKP_DimReportingPeriod.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimTreatmentFunction"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="LKP_DimTreatmentFunction"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dw].[DimTreatmentFunction]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dw].[DimTreatmentFunction]) [refTable]
+where [refTable].[TreatmentFunctionCode] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="TreatmentFunctionKey" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="TreatmentFunctionCode" dataType="DT_STR" length="20" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="TreatmentFunctionName" dataType="DT_STR" length="255" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="CreatedAt" dataType="DT_DBTIMESTAMP2" length="0" precision="0" scale="7" codePage="0"/&gt;&lt;referenceColumn name="UpdatedAt" dataType="DT_DBTIMESTAMP2" length="0" precision="0" scale="7" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\DFT_Load_FactRTTWaitingList\1666:invalid};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimTreatmentFunction.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[MKADESINA\SQL2019.NHS_Patient_Flow_BI.sa]"
+                  connectionManagerRefId="Package.ConnectionManagers[MKADESINA\SQL2019.NHS_Patient_Flow_BI.sa]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimTreatmentFunction.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimTreatmentFunction.Inputs[Lookup Input].Columns[treatment_function_code]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="8000"
+                      cachedName="treatment_function_code"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[treatment_function_code]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">TreatmentFunctionCode</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimTreatmentFunction.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\DFT_Load_FactRTTWaitingList\LKP_DimTreatmentFunction.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimTreatmentFunction.Outputs[Lookup Match Output].Columns[TreatmentFunctionKey]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\LKP_DimTreatmentFunction.Outputs[Lookup Match Output].Columns[TreatmentFunctionKey]"
+                      name="TreatmentFunctionKey"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">TreatmentFunctionKey</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimTreatmentFunction.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\DFT_Load_FactRTTWaitingList\LKP_DimTreatmentFunction.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimTreatmentFunction.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\DFT_Load_FactRTTWaitingList\LKP_DimTreatmentFunction.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimTreatmentFunction.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\LKP_DimTreatmentFunction.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\LKP_DimTreatmentFunction.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\LKP_DimTreatmentFunction.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="SRC_RTT_Clean_Work"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[stg].[RTT_Clean]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT      reporting_period,      provider_org_code,      commissioner_org_code,      treatment_function_code,      CAST(rtt_part_type AS NVARCHAR(80)) AS rtt_part_type,      total_waiting,      total_all,      unknown_clock_start_count,        CASE          WHEN [Gt 00 To 01 Weeks SUM 1] IS NOT NULL OR [Gt 01 To 02 Weeks SUM 1] IS NOT NULL OR [Gt 02 To 03 Weeks SUM 1] IS NOT NULL OR [Gt 03 To 04 Weeks SUM 1] IS NOT NULL OR [Gt 04 To 05 Weeks SUM 1] IS NOT NULL OR [Gt 05 To 06 Weeks SUM 1] IS NOT NULL OR [Gt 06 To 07 Weeks SUM 1] IS NOT NULL OR [Gt 07 To 08 Weeks SUM 1] IS NOT NULL OR [Gt 08 To 09 Weeks SUM 1] IS NOT NULL OR [Gt 09 To 10 Weeks SUM 1] IS NOT NULL OR [Gt 10 To 11 Weeks SUM 1] IS NOT NULL OR [Gt 11 To 12 Weeks SUM 1] IS NOT NULL OR [Gt 12 To 13 Weeks SUM 1] IS NOT NULL OR [Gt 13 To 14 Weeks SUM 1] IS NOT NULL OR [Gt 14 To 15 Weeks SUM 1] IS NOT NULL OR [Gt 15 To 16 Weeks SUM 1] IS NOT NULL OR [Gt 16 To 17 Weeks SUM 1] IS NOT NULL OR [Gt 17 To 18 Weeks SUM 1] IS NOT NULL OR [Gt 18 To 19 Weeks SUM 1] IS NOT NULL OR [Gt 19 To 20 Weeks SUM 1] IS NOT NULL OR [Gt 20 To 21 Weeks SUM 1] IS NOT NULL OR [Gt 21 To 22 Weeks SUM 1] IS NOT NULL OR [Gt 22 To 23 Weeks SUM 1] IS NOT NULL OR [Gt 23 To 24 Weeks SUM 1] IS NOT NULL OR [Gt 24 To 25 Weeks SUM 1] IS NOT NULL OR [Gt 25 To 26 Weeks SUM 1] IS NOT NULL OR [Gt 26 To 27 Weeks SUM 1] IS NOT NULL OR [Gt 27 To 28 Weeks SUM 1] IS NOT NULL OR [Gt 28 To 29 Weeks SUM 1] IS NOT NULL OR [Gt 29 To 30 Weeks SUM 1] IS NOT NULL OR [Gt 30 To 31 Weeks SUM 1] IS NOT NULL OR [Gt 31 To 32 Weeks SUM 1] IS NOT NULL OR [Gt 32 To 33 Weeks SUM 1] IS NOT NULL OR [Gt 33 To 34 Weeks SUM 1] IS NOT NULL OR [Gt 34 To 35 Weeks SUM 1] IS NOT NULL OR [Gt 35 To 36 Weeks SUM 1] IS NOT NULL OR [Gt 36 To 37 Weeks SUM 1] IS NOT NULL OR [Gt 37 To 38 Weeks SUM 1] IS NOT NULL OR [Gt 38 To 39 Weeks SUM 1] IS NOT NULL OR [Gt 39 To 40 Weeks SUM 1] IS NOT NULL OR [Gt 40 To 41 Weeks SUM 1] IS NOT NULL OR [Gt 41 To 42 Weeks SUM 1] IS NOT NULL OR [Gt 42 To 43 Weeks SUM 1] IS NOT NULL OR [Gt 43 To 44 Weeks SUM 1] IS NOT NULL OR [Gt 44 To 45 Weeks SUM 1] IS NOT NULL OR [Gt 45 To 46 Weeks SUM 1] IS NOT NULL OR [Gt 46 To 47 Weeks SUM 1] IS NOT NULL OR [Gt 47 To 48 Weeks SUM 1] IS NOT NULL OR [Gt 48 To 49 Weeks SUM 1] IS NOT NULL OR [Gt 49 To 50 Weeks SUM 1] IS NOT NULL OR [Gt 50 To 51 Weeks SUM 1] IS NOT NULL OR [Gt 51 To 52 Weeks SUM 1] IS NOT NULL OR [Gt 52 To 53 Weeks SUM 1] IS NOT NULL OR [Gt 53 To 54 Weeks SUM 1] IS NOT NULL OR [Gt 54 To 55 Weeks SUM 1] IS NOT NULL OR [Gt 55 To 56 Weeks SUM 1] IS NOT NULL OR [Gt 56 To 57 Weeks SUM 1] IS NOT NULL OR [Gt 57 To 58 Weeks SUM 1] IS NOT NULL OR [Gt 58 To 59 Weeks SUM 1] IS NOT NULL OR [Gt 59 To 60 Weeks SUM 1] IS NOT NULL OR [Gt 60 To 61 Weeks SUM 1] IS NOT NULL OR [Gt 61 To 62 Weeks SUM 1] IS NOT NULL OR [Gt 62 To 63 Weeks SUM 1] IS NOT NULL OR [Gt 63 To 64 Weeks SUM 1] IS NOT NULL OR [Gt 64 To 65 Weeks SUM 1] IS NOT NULL OR [Gt 65 To 66 Weeks SUM 1] IS NOT NULL OR [Gt 66 To 67 Weeks SUM 1] IS NOT NULL OR [Gt 67 To 68 Weeks SUM 1] IS NOT NULL OR [Gt 68 To 69 Weeks SUM 1] IS NOT NULL OR [Gt 69 To 70 Weeks SUM 1] IS NOT NULL OR [Gt 70 To 71 Weeks SUM 1] IS NOT NULL OR [Gt 71 To 72 Weeks SUM 1] IS NOT NULL OR [Gt 72 To 73 Weeks SUM 1] IS NOT NULL OR [Gt 73 To 74 Weeks SUM 1] IS NOT NULL OR [Gt 74 To 75 Weeks SUM 1] IS NOT NULL OR [Gt 75 To 76 Weeks SUM 1] IS NOT NULL OR [Gt 76 To 77 Weeks SUM 1] IS NOT NULL OR [Gt 77 To 78 Weeks SUM 1] IS NOT NULL OR [Gt 78 To 79 Weeks SUM 1] IS NOT NULL OR [Gt 79 To 80 Weeks SUM 1] IS NOT NULL OR [Gt 80 To 81 Weeks SUM 1] IS NOT NULL OR [Gt 81 To 82 Weeks SUM 1] IS NOT NULL OR [Gt 82 To 83 Weeks SUM 1] IS NOT NULL OR [Gt 83 To 84 Weeks SUM 1] IS NOT NULL OR [Gt 84 To 85 Weeks SUM 1] IS NOT NULL OR [Gt 85 To 86 Weeks SUM 1] IS NOT NULL OR [Gt 86 To 87 Weeks SUM 1] IS NOT NULL OR [Gt 87 To 88 Weeks SUM 1] IS NOT NULL OR [Gt 88 To 89 Weeks SUM 1] IS NOT NULL OR [Gt 89 To 90 Weeks SUM 1] IS NOT NULL OR [Gt 90 To 91 Weeks SUM 1] IS NOT NULL OR [Gt 91 To 92 Weeks SUM 1] IS NOT NULL OR [Gt 92 To 93 Weeks SUM 1] IS NOT NULL OR [Gt 93 To 94 Weeks SUM 1] IS NOT NULL OR [Gt 94 To 95 Weeks SUM 1] IS NOT NULL OR [Gt 95 To 96 Weeks SUM 1] IS NOT NULL OR [Gt 96 To 97 Weeks SUM 1] IS NOT NULL OR [Gt 97 To 98 Weeks SUM 1] IS NOT NULL OR [Gt 98 To 99 Weeks SUM 1] IS NOT NULL OR [Gt 99 To 100 Weeks SUM 1] IS NOT NULL OR [Gt 100 To 101 Weeks SUM 1] IS NOT NULL OR [Gt 101 To 102 Weeks SUM 1] IS NOT NULL OR [Gt 102 To 103 Weeks SUM 1] IS NOT NULL OR [Gt 103 To 104 Weeks SUM 1] IS NOT NULL OR [Gt 104 Weeks SUM 1] IS NOT NULL          THEN CAST((COALESCE([Gt 00 To 01 Weeks SUM 1],0) + COALESCE([Gt 01 To 02 Weeks SUM 1],0) + COALESCE([Gt 02 To 03 Weeks SUM 1],0) + COALESCE([Gt 03 To 04 Weeks SUM 1],0) + COALESCE([Gt 04 To 05 Weeks SUM 1],0) + COALESCE([Gt 05 To 06 Weeks SUM 1],0) + COALESCE([Gt 06 To 07 Weeks SUM 1],0) + COALESCE([Gt 07 To 08 Weeks SUM 1],0) + COALESCE([Gt 08 To 09 Weeks SUM 1],0) + COALESCE([Gt 09 To 10 Weeks SUM 1],0) + COALESCE([Gt 10 To 11 Weeks SUM 1],0) + COALESCE([Gt 11 To 12 Weeks SUM 1],0) + COALESCE([Gt 12 To 13 Weeks SUM 1],0) + COALESCE([Gt 13 To 14 Weeks SUM 1],0) + COALESCE([Gt 14 To 15 Weeks SUM 1],0) + COALESCE([Gt 15 To 16 Weeks SUM 1],0) + COALESCE([Gt 16 To 17 Weeks SUM 1],0) + COALESCE([Gt 17 To 18 Weeks SUM 1],0)) AS BIGINT)          ELSE CAST(NULL AS BIGINT)      END AS WaitsUnder18Weeks,        CASE          WHEN [Gt 00 To 01 Weeks SUM 1] IS NOT NULL OR [Gt 01 To 02 Weeks SUM 1] IS NOT NULL OR [Gt 02 To 03 Weeks SUM 1] IS NOT NULL OR [Gt 03 To 04 Weeks SUM 1] IS NOT NULL OR [Gt 04 To 05 Weeks SUM 1] IS NOT NULL OR [Gt 05 To 06 Weeks SUM 1] IS NOT NULL OR [Gt 06 To 07 Weeks SUM 1] IS NOT NULL OR [Gt 07 To 08 Weeks SUM 1] IS NOT NULL OR [Gt 08 To 09 Weeks SUM 1] IS NOT NULL OR [Gt 09 To 10 Weeks SUM 1] IS NOT NULL OR [Gt 10 To 11 Weeks SUM 1] IS NOT NULL OR [Gt 11 To 12 Weeks SUM 1] IS NOT NULL OR [Gt 12 To 13 Weeks SUM 1] IS NOT NULL OR [Gt 13 To 14 Weeks SUM 1] IS NOT NULL OR [Gt 14 To 15 Weeks SUM 1] IS NOT NULL OR [Gt 15 To 16 Weeks SUM 1] IS NOT NULL OR [Gt 16 To 17 Weeks SUM 1] IS NOT NULL OR [Gt 17 To 18 Weeks SUM 1] IS NOT NULL OR [Gt 18 To 19 Weeks SUM 1] IS NOT NULL OR [Gt 19 To 20 Weeks SUM 1] IS NOT NULL OR [Gt 20 To 21 Weeks SUM 1] IS NOT NULL OR [Gt 21 To 22 Weeks SUM 1] IS NOT NULL OR [Gt 22 To 23 Weeks SUM 1] IS NOT NULL OR [Gt 23 To 24 Weeks SUM 1] IS NOT NULL OR [Gt 24 To 25 Weeks SUM 1] IS NOT NULL OR [Gt 25 To 26 Weeks SUM 1] IS NOT NULL OR [Gt 26 To 27 Weeks SUM 1] IS NOT NULL OR [Gt 27 To 28 Weeks SUM 1] IS NOT NULL OR [Gt 28 To 29 Weeks SUM 1] IS NOT NULL OR [Gt 29 To 30 Weeks SUM 1] IS NOT NULL OR [Gt 30 To 31 Weeks SUM 1] IS NOT NULL OR [Gt 31 To 32 Weeks SUM 1] IS NOT NULL OR [Gt 32 To 33 Weeks SUM 1] IS NOT NULL OR [Gt 33 To 34 Weeks SUM 1] IS NOT NULL OR [Gt 34 To 35 Weeks SUM 1] IS NOT NULL OR [Gt 35 To 36 Weeks SUM 1] IS NOT NULL OR [Gt 36 To 37 Weeks SUM 1] IS NOT NULL OR [Gt 37 To 38 Weeks SUM 1] IS NOT NULL OR [Gt 38 To 39 Weeks SUM 1] IS NOT NULL OR [Gt 39 To 40 Weeks SUM 1] IS NOT NULL OR [Gt 40 To 41 Weeks SUM 1] IS NOT NULL OR [Gt 41 To 42 Weeks SUM 1] IS NOT NULL OR [Gt 42 To 43 Weeks SUM 1] IS NOT NULL OR [Gt 43 To 44 Weeks SUM 1] IS NOT NULL OR [Gt 44 To 45 Weeks SUM 1] IS NOT NULL OR [Gt 45 To 46 Weeks SUM 1] IS NOT NULL OR [Gt 46 To 47 Weeks SUM 1] IS NOT NULL OR [Gt 47 To 48 Weeks SUM 1] IS NOT NULL OR [Gt 48 To 49 Weeks SUM 1] IS NOT NULL OR [Gt 49 To 50 Weeks SUM 1] IS NOT NULL OR [Gt 50 To 51 Weeks SUM 1] IS NOT NULL OR [Gt 51 To 52 Weeks SUM 1] IS NOT NULL OR [Gt 52 To 53 Weeks SUM 1] IS NOT NULL OR [Gt 53 To 54 Weeks SUM 1] IS NOT NULL OR [Gt 54 To 55 Weeks SUM 1] IS NOT NULL OR [Gt 55 To 56 Weeks SUM 1] IS NOT NULL OR [Gt 56 To 57 Weeks SUM 1] IS NOT NULL OR [Gt 57 To 58 Weeks SUM 1] IS NOT NULL OR [Gt 58 To 59 Weeks SUM 1] IS NOT NULL OR [Gt 59 To 60 Weeks SUM 1] IS NOT NULL OR [Gt 60 To 61 Weeks SUM 1] IS NOT NULL OR [Gt 61 To 62 Weeks SUM 1] IS NOT NULL OR [Gt 62 To 63 Weeks SUM 1] IS NOT NULL OR [Gt 63 To 64 Weeks SUM 1] IS NOT NULL OR [Gt 64 To 65 Weeks SUM 1] IS NOT NULL OR [Gt 65 To 66 Weeks SUM 1] IS NOT NULL OR [Gt 66 To 67 Weeks SUM 1] IS NOT NULL OR [Gt 67 To 68 Weeks SUM 1] IS NOT NULL OR [Gt 68 To 69 Weeks SUM 1] IS NOT NULL OR [Gt 69 To 70 Weeks SUM 1] IS NOT NULL OR [Gt 70 To 71 Weeks SUM 1] IS NOT NULL OR [Gt 71 To 72 Weeks SUM 1] IS NOT NULL OR [Gt 72 To 73 Weeks SUM 1] IS NOT NULL OR [Gt 73 To 74 Weeks SUM 1] IS NOT NULL OR [Gt 74 To 75 Weeks SUM 1] IS NOT NULL OR [Gt 75 To 76 Weeks SUM 1] IS NOT NULL OR [Gt 76 To 77 Weeks SUM 1] IS NOT NULL OR [Gt 77 To 78 Weeks SUM 1] IS NOT NULL OR [Gt 78 To 79 Weeks SUM 1] IS NOT NULL OR [Gt 79 To 80 Weeks SUM 1] IS NOT NULL OR [Gt 80 To 81 Weeks SUM 1] IS NOT NULL OR [Gt 81 To 82 Weeks SUM 1] IS NOT NULL OR [Gt 82 To 83 Weeks SUM 1] IS NOT NULL OR [Gt 83 To 84 Weeks SUM 1] IS NOT NULL OR [Gt 84 To 85 Weeks SUM 1] IS NOT NULL OR [Gt 85 To 86 Weeks SUM 1] IS NOT NULL OR [Gt 86 To 87 Weeks SUM 1] IS NOT NULL OR [Gt 87 To 88 Weeks SUM 1] IS NOT NULL OR [Gt 88 To 89 Weeks SUM 1] IS NOT NULL OR [Gt 89 To 90 Weeks SUM 1] IS NOT NULL OR [Gt 90 To 91 Weeks SUM 1] IS NOT NULL OR [Gt 91 To 92 Weeks SUM 1] IS NOT NULL OR [Gt 92 To 93 Weeks SUM 1] IS NOT NULL OR [Gt 93 To 94 Weeks SUM 1] IS NOT NULL OR [Gt 94 To 95 Weeks SUM 1] IS NOT NULL OR [Gt 95 To 96 Weeks SUM 1] IS NOT NULL OR [Gt 96 To 97 Weeks SUM 1] IS NOT NULL OR [Gt 97 To 98 Weeks SUM 1] IS NOT NULL OR [Gt 98 To 99 Weeks SUM 1] IS NOT NULL OR [Gt 99 To 100 Weeks SUM 1] IS NOT NULL OR [Gt 100 To 101 Weeks SUM 1] IS NOT NULL OR [Gt 101 To 102 Weeks SUM 1] IS NOT NULL OR [Gt 102 To 103 Weeks SUM 1] IS NOT NULL OR [Gt 103 To 104 Weeks SUM 1] IS NOT NULL OR [Gt 104 Weeks SUM 1] IS NOT NULL          THEN CAST((COALESCE([Gt 18 To 19 Weeks SUM 1],0) + COALESCE([Gt 19 To 20 Weeks SUM 1],0) + COALESCE([Gt 20 To 21 Weeks SUM 1],0) + COALESCE([Gt 21 To 22 Weeks SUM 1],0) + COALESCE([Gt 22 To 23 Weeks SUM 1],0) + COALESCE([Gt 23 To 24 Weeks SUM 1],0) + COALESCE([Gt 24 To 25 Weeks SUM 1],0) + COALESCE([Gt 25 To 26 Weeks SUM 1],0) + COALESCE([Gt 26 To 27 Weeks SUM 1],0) + COALESCE([Gt 27 To 28 Weeks SUM 1],0) + COALESCE([Gt 28 To 29 Weeks SUM 1],0) + COALESCE([Gt 29 To 30 Weeks SUM 1],0) + COALESCE([Gt 30 To 31 Weeks SUM 1],0) + COALESCE([Gt 31 To 32 Weeks SUM 1],0) + COALESCE([Gt 32 To 33 Weeks SUM 1],0) + COALESCE([Gt 33 To 34 Weeks SUM 1],0) + COALESCE([Gt 34 To 35 Weeks SUM 1],0) + COALESCE([Gt 35 To 36 Weeks SUM 1],0) + COALESCE([Gt 36 To 37 Weeks SUM 1],0) + COALESCE([Gt 37 To 38 Weeks SUM 1],0) + COALESCE([Gt 38 To 39 Weeks SUM 1],0) + COALESCE([Gt 39 To 40 Weeks SUM 1],0) + COALESCE([Gt 40 To 41 Weeks SUM 1],0) + COALESCE([Gt 41 To 42 Weeks SUM 1],0) + COALESCE([Gt 42 To 43 Weeks SUM 1],0) + COALESCE([Gt 43 To 44 Weeks SUM 1],0) + COALESCE([Gt 44 To 45 Weeks SUM 1],0) + COALESCE([Gt 45 To 46 Weeks SUM 1],0) + COALESCE([Gt 46 To 47 Weeks SUM 1],0) + COALESCE([Gt 47 To 48 Weeks SUM 1],0) + COALESCE([Gt 48 To 49 Weeks SUM 1],0) + COALESCE([Gt 49 To 50 Weeks SUM 1],0) + COALESCE([Gt 50 To 51 Weeks SUM 1],0) + COALESCE([Gt 51 To 52 Weeks SUM 1],0) + COALESCE([Gt 52 To 53 Weeks SUM 1],0) + COALESCE([Gt 53 To 54 Weeks SUM 1],0) + COALESCE([Gt 54 To 55 Weeks SUM 1],0) + COALESCE([Gt 55 To 56 Weeks SUM 1],0) + COALESCE([Gt 56 To 57 Weeks SUM 1],0) + COALESCE([Gt 57 To 58 Weeks SUM 1],0) + COALESCE([Gt 58 To 59 Weeks SUM 1],0) + COALESCE([Gt 59 To 60 Weeks SUM 1],0) + COALESCE([Gt 60 To 61 Weeks SUM 1],0) + COALESCE([Gt 61 To 62 Weeks SUM 1],0) + COALESCE([Gt 62 To 63 Weeks SUM 1],0) + COALESCE([Gt 63 To 64 Weeks SUM 1],0) + COALESCE([Gt 64 To 65 Weeks SUM 1],0) + COALESCE([Gt 65 To 66 Weeks SUM 1],0) + COALESCE([Gt 66 To 67 Weeks SUM 1],0) + COALESCE([Gt 67 To 68 Weeks SUM 1],0) + COALESCE([Gt 68 To 69 Weeks SUM 1],0) + COALESCE([Gt 69 To 70 Weeks SUM 1],0) + COALESCE([Gt 70 To 71 Weeks SUM 1],0) + COALESCE([Gt 71 To 72 Weeks SUM 1],0) + COALESCE([Gt 72 To 73 Weeks SUM 1],0) + COALESCE([Gt 73 To 74 Weeks SUM 1],0) + COALESCE([Gt 74 To 75 Weeks SUM 1],0) + COALESCE([Gt 75 To 76 Weeks SUM 1],0) + COALESCE([Gt 76 To 77 Weeks SUM 1],0) + COALESCE([Gt 77 To 78 Weeks SUM 1],0) + COALESCE([Gt 78 To 79 Weeks SUM 1],0) + COALESCE([Gt 79 To 80 Weeks SUM 1],0) + COALESCE([Gt 80 To 81 Weeks SUM 1],0) + COALESCE([Gt 81 To 82 Weeks SUM 1],0) + COALESCE([Gt 82 To 83 Weeks SUM 1],0) + COALESCE([Gt 83 To 84 Weeks SUM 1],0) + COALESCE([Gt 84 To 85 Weeks SUM 1],0) + COALESCE([Gt 85 To 86 Weeks SUM 1],0) + COALESCE([Gt 86 To 87 Weeks SUM 1],0) + COALESCE([Gt 87 To 88 Weeks SUM 1],0) + COALESCE([Gt 88 To 89 Weeks SUM 1],0) + COALESCE([Gt 89 To 90 Weeks SUM 1],0) + COALESCE([Gt 90 To 91 Weeks SUM 1],0) + COALESCE([Gt 91 To 92 Weeks SUM 1],0) + COALESCE([Gt 92 To 93 Weeks SUM 1],0) + COALESCE([Gt 93 To 94 Weeks SUM 1],0) + COALESCE([Gt 94 To 95 Weeks SUM 1],0) + COALESCE([Gt 95 To 96 Weeks SUM 1],0) + COALESCE([Gt 96 To 97 Weeks SUM 1],0) + COALESCE([Gt 97 To 98 Weeks SUM 1],0) + COALESCE([Gt 98 To 99 Weeks SUM 1],0) + COALESCE([Gt 99 To 100 Weeks SUM 1],0) + COALESCE([Gt 100 To 101 Weeks SUM 1],0) + COALESCE([Gt 101 To 102 Weeks SUM 1],0) + COALESCE([Gt 102 To 103 Weeks SUM 1],0) + COALESCE([Gt 103 To 104 Weeks SUM 1],0) + COALESCE([Gt 104 Weeks SUM 1],0)) AS BIGINT)          ELSE CAST(NULL AS BIGINT)      END AS WaitsOver18Weeks,        CASE          WHEN [Gt 00 To 01 Weeks SUM 1] IS NOT NULL OR [Gt 01 To 02 Weeks SUM 1] IS NOT NULL OR [Gt 02 To 03 Weeks SUM 1] IS NOT NULL OR [Gt 03 To 04 Weeks SUM 1] IS NOT NULL OR [Gt 04 To 05 Weeks SUM 1] IS NOT NULL OR [Gt 05 To 06 Weeks SUM 1] IS NOT NULL OR [Gt 06 To 07 Weeks SUM 1] IS NOT NULL OR [Gt 07 To 08 Weeks SUM 1] IS NOT NULL OR [Gt 08 To 09 Weeks SUM 1] IS NOT NULL OR [Gt 09 To 10 Weeks SUM 1] IS NOT NULL OR [Gt 10 To 11 Weeks SUM 1] IS NOT NULL OR [Gt 11 To 12 Weeks SUM 1] IS NOT NULL OR [Gt 12 To 13 Weeks SUM 1] IS NOT NULL OR [Gt 13 To 14 Weeks SUM 1] IS NOT NULL OR [Gt 14 To 15 Weeks SUM 1] IS NOT NULL OR [Gt 15 To 16 Weeks SUM 1] IS NOT NULL OR [Gt 16 To 17 Weeks SUM 1] IS NOT NULL OR [Gt 17 To 18 Weeks SUM 1] IS NOT NULL OR [Gt 18 To 19 Weeks SUM 1] IS NOT NULL OR [Gt 19 To 20 Weeks SUM 1] IS NOT NULL OR [Gt 20 To 21 Weeks SUM 1] IS NOT NULL OR [Gt 21 To 22 Weeks SUM 1] IS NOT NULL OR [Gt 22 To 23 Weeks SUM 1] IS NOT NULL OR [Gt 23 To 24 Weeks SUM 1] IS NOT NULL OR [Gt 24 To 25 Weeks SUM 1] IS NOT NULL OR [Gt 25 To 26 Weeks SUM 1] IS NOT NULL OR [Gt 26 To 27 Weeks SUM 1] IS NOT NULL OR [Gt 27 To 28 Weeks SUM 1] IS NOT NULL OR [Gt 28 To 29 Weeks SUM 1] IS NOT NULL OR [Gt 29 To 30 Weeks SUM 1] IS NOT NULL OR [Gt 30 To 31 Weeks SUM 1] IS NOT NULL OR [Gt 31 To 32 Weeks SUM 1] IS NOT NULL OR [Gt 32 To 33 Weeks SUM 1] IS NOT NULL OR [Gt 33 To 34 Weeks SUM 1] IS NOT NULL OR [Gt 34 To 35 Weeks SUM 1] IS NOT NULL OR [Gt 35 To 36 Weeks SUM 1] IS NOT NULL OR [Gt 36 To 37 Weeks SUM 1] IS NOT NULL OR [Gt 37 To 38 Weeks SUM 1] IS NOT NULL OR [Gt 38 To 39 Weeks SUM 1] IS NOT NULL OR [Gt 39 To 40 Weeks SUM 1] IS NOT NULL OR [Gt 40 To 41 Weeks SUM 1] IS NOT NULL OR [Gt 41 To 42 Weeks SUM 1] IS NOT NULL OR [Gt 42 To 43 Weeks SUM 1] IS NOT NULL OR [Gt 43 To 44 Weeks SUM 1] IS NOT NULL OR [Gt 44 To 45 Weeks SUM 1] IS NOT NULL OR [Gt 45 To 46 Weeks SUM 1] IS NOT NULL OR [Gt 46 To 47 Weeks SUM 1] IS NOT NULL OR [Gt 47 To 48 Weeks SUM 1] IS NOT NULL OR [Gt 48 To 49 Weeks SUM 1] IS NOT NULL OR [Gt 49 To 50 Weeks SUM 1] IS NOT NULL OR [Gt 50 To 51 Weeks SUM 1] IS NOT NULL OR [Gt 51 To 52 Weeks SUM 1] IS NOT NULL OR [Gt 52 To 53 Weeks SUM 1] IS NOT NULL OR [Gt 53 To 54 Weeks SUM 1] IS NOT NULL OR [Gt 54 To 55 Weeks SUM 1] IS NOT NULL OR [Gt 55 To 56 Weeks SUM 1] IS NOT NULL OR [Gt 56 To 57 Weeks SUM 1] IS NOT NULL OR [Gt 57 To 58 Weeks SUM 1] IS NOT NULL OR [Gt 58 To 59 Weeks SUM 1] IS NOT NULL OR [Gt 59 To 60 Weeks SUM 1] IS NOT NULL OR [Gt 60 To 61 Weeks SUM 1] IS NOT NULL OR [Gt 61 To 62 Weeks SUM 1] IS NOT NULL OR [Gt 62 To 63 Weeks SUM 1] IS NOT NULL OR [Gt 63 To 64 Weeks SUM 1] IS NOT NULL OR [Gt 64 To 65 Weeks SUM 1] IS NOT NULL OR [Gt 65 To 66 Weeks SUM 1] IS NOT NULL OR [Gt 66 To 67 Weeks SUM 1] IS NOT NULL OR [Gt 67 To 68 Weeks SUM 1] IS NOT NULL OR [Gt 68 To 69 Weeks SUM 1] IS NOT NULL OR [Gt 69 To 70 Weeks SUM 1] IS NOT NULL OR [Gt 70 To 71 Weeks SUM 1] IS NOT NULL OR [Gt 71 To 72 Weeks SUM 1] IS NOT NULL OR [Gt 72 To 73 Weeks SUM 1] IS NOT NULL OR [Gt 73 To 74 Weeks SUM 1] IS NOT NULL OR [Gt 74 To 75 Weeks SUM 1] IS NOT NULL OR [Gt 75 To 76 Weeks SUM 1] IS NOT NULL OR [Gt 76 To 77 Weeks SUM 1] IS NOT NULL OR [Gt 77 To 78 Weeks SUM 1] IS NOT NULL OR [Gt 78 To 79 Weeks SUM 1] IS NOT NULL OR [Gt 79 To 80 Weeks SUM 1] IS NOT NULL OR [Gt 80 To 81 Weeks SUM 1] IS NOT NULL OR [Gt 81 To 82 Weeks SUM 1] IS NOT NULL OR [Gt 82 To 83 Weeks SUM 1] IS NOT NULL OR [Gt 83 To 84 Weeks SUM 1] IS NOT NULL OR [Gt 84 To 85 Weeks SUM 1] IS NOT NULL OR [Gt 85 To 86 Weeks SUM 1] IS NOT NULL OR [Gt 86 To 87 Weeks SUM 1] IS NOT NULL OR [Gt 87 To 88 Weeks SUM 1] IS NOT NULL OR [Gt 88 To 89 Weeks SUM 1] IS NOT NULL OR [Gt 89 To 90 Weeks SUM 1] IS NOT NULL OR [Gt 90 To 91 Weeks SUM 1] IS NOT NULL OR [Gt 91 To 92 Weeks SUM 1] IS NOT NULL OR [Gt 92 To 93 Weeks SUM 1] IS NOT NULL OR [Gt 93 To 94 Weeks SUM 1] IS NOT NULL OR [Gt 94 To 95 Weeks SUM 1] IS NOT NULL OR [Gt 95 To 96 Weeks SUM 1] IS NOT NULL OR [Gt 96 To 97 Weeks SUM 1] IS NOT NULL OR [Gt 97 To 98 Weeks SUM 1] IS NOT NULL OR [Gt 98 To 99 Weeks SUM 1] IS NOT NULL OR [Gt 99 To 100 Weeks SUM 1] IS NOT NULL OR [Gt 100 To 101 Weeks SUM 1] IS NOT NULL OR [Gt 101 To 102 Weeks SUM 1] IS NOT NULL OR [Gt 102 To 103 Weeks SUM 1] IS NOT NULL OR [Gt 103 To 104 Weeks SUM 1] IS NOT NULL OR [Gt 104 Weeks SUM 1] IS NOT NULL          THEN CAST((COALESCE([Gt 52 To 53 Weeks SUM 1],0) + COALESCE([Gt 53 To 54 Weeks SUM 1],0) + COALESCE([Gt 54 To 55 Weeks SUM 1],0) + COALESCE([Gt 55 To 56 Weeks SUM 1],0) + COALESCE([Gt 56 To 57 Weeks SUM 1],0) + COALESCE([Gt 57 To 58 Weeks SUM 1],0) + COALESCE([Gt 58 To 59 Weeks SUM 1],0) + COALESCE([Gt 59 To 60 Weeks SUM 1],0) + COALESCE([Gt 60 To 61 Weeks SUM 1],0) + COALESCE([Gt 61 To 62 Weeks SUM 1],0) + COALESCE([Gt 62 To 63 Weeks SUM 1],0) + COALESCE([Gt 63 To 64 Weeks SUM 1],0) + COALESCE([Gt 64 To 65 Weeks SUM 1],0) + COALESCE([Gt 65 To 66 Weeks SUM 1],0) + COALESCE([Gt 66 To 67 Weeks SUM 1],0) + COALESCE([Gt 67 To 68 Weeks SUM 1],0) + COALESCE([Gt 68 To 69 Weeks SUM 1],0) + COALESCE([Gt 69 To 70 Weeks SUM 1],0) + COALESCE([Gt 70 To 71 Weeks SUM 1],0) + COALESCE([Gt 71 To 72 Weeks SUM 1],0) + COALESCE([Gt 72 To 73 Weeks SUM 1],0) + COALESCE([Gt 73 To 74 Weeks SUM 1],0) + COALESCE([Gt 74 To 75 Weeks SUM 1],0) + COALESCE([Gt 75 To 76 Weeks SUM 1],0) + COALESCE([Gt 76 To 77 Weeks SUM 1],0) + COALESCE([Gt 77 To 78 Weeks SUM 1],0) + COALESCE([Gt 78 To 79 Weeks SUM 1],0) + COALESCE([Gt 79 To 80 Weeks SUM 1],0) + COALESCE([Gt 80 To 81 Weeks SUM 1],0) + COALESCE([Gt 81 To 82 Weeks SUM 1],0) + COALESCE([Gt 82 To 83 Weeks SUM 1],0) + COALESCE([Gt 83 To 84 Weeks SUM 1],0) + COALESCE([Gt 84 To 85 Weeks SUM 1],0) + COALESCE([Gt 85 To 86 Weeks SUM 1],0) + COALESCE([Gt 86 To 87 Weeks SUM 1],0) + COALESCE([Gt 87 To 88 Weeks SUM 1],0) + COALESCE([Gt 88 To 89 Weeks SUM 1],0) + COALESCE([Gt 89 To 90 Weeks SUM 1],0) + COALESCE([Gt 90 To 91 Weeks SUM 1],0) + COALESCE([Gt 91 To 92 Weeks SUM 1],0) + COALESCE([Gt 92 To 93 Weeks SUM 1],0) + COALESCE([Gt 93 To 94 Weeks SUM 1],0) + COALESCE([Gt 94 To 95 Weeks SUM 1],0) + COALESCE([Gt 95 To 96 Weeks SUM 1],0) + COALESCE([Gt 96 To 97 Weeks SUM 1],0) + COALESCE([Gt 97 To 98 Weeks SUM 1],0) + COALESCE([Gt 98 To 99 Weeks SUM 1],0) + COALESCE([Gt 99 To 100 Weeks SUM 1],0) + COALESCE([Gt 100 To 101 Weeks SUM 1],0) + COALESCE([Gt 101 To 102 Weeks SUM 1],0) + COALESCE([Gt 102 To 103 Weeks SUM 1],0) + COALESCE([Gt 103 To 104 Weeks SUM 1],0) + COALESCE([Gt 104 Weeks SUM 1],0)) AS BIGINT)          ELSE CAST(NULL AS BIGINT)      END AS WaitsOver52Weeks    FROM stg.RTT_Clean_Work
+WHERE reporting_period = ?;</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping">"Parameter0:Input",{DB6292E7-4163-4770-89D3-0BFFC7290AD1};</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[MKADESINA\SQL2019.NHS_Patient_Flow_BI.sa]"
+                  connectionManagerRefId="Package.ConnectionManagers[MKADESINA\SQL2019.NHS_Patient_Flow_BI.sa]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[reporting_period]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].ExternalColumns[reporting_period]"
+                      length="8000"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[reporting_period]"
+                      name="reporting_period"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[provider_org_code]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].ExternalColumns[provider_org_code]"
+                      length="8000"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[provider_org_code]"
+                      name="provider_org_code"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[commissioner_org_code]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].ExternalColumns[commissioner_org_code]"
+                      length="8000"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[commissioner_org_code]"
+                      name="commissioner_org_code"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[rtt_part_type]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].ExternalColumns[rtt_part_type]"
+                      length="80"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[rtt_part_type]"
+                      name="rtt_part_type"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[treatment_function_code]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].ExternalColumns[treatment_function_code]"
+                      length="8000"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[treatment_function_code]"
+                      name="treatment_function_code"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[total_waiting]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].ExternalColumns[total_waiting]"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[total_waiting]"
+                      name="total_waiting"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[unknown_clock_start_count]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].ExternalColumns[unknown_clock_start_count]"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[unknown_clock_start_count]"
+                      name="unknown_clock_start_count"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[total_all]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].ExternalColumns[total_all]"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[total_all]"
+                      name="total_all"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[WaitsUnder18Weeks]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].ExternalColumns[WaitsUnder18Weeks]"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[WaitsUnder18Weeks]"
+                      name="WaitsUnder18Weeks"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[WaitsOver18Weeks]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].ExternalColumns[WaitsOver18Weeks]"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[WaitsOver18Weeks]"
+                      name="WaitsOver18Weeks"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[WaitsOver52Weeks]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].ExternalColumns[WaitsOver52Weeks]"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[WaitsOver52Weeks]"
+                      name="WaitsOver52Weeks"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].ExternalColumns[reporting_period]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8000"
+                      name="reporting_period" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].ExternalColumns[provider_org_code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8000"
+                      name="provider_org_code" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].ExternalColumns[commissioner_org_code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8000"
+                      name="commissioner_org_code" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].ExternalColumns[rtt_part_type]"
+                      dataType="wstr"
+                      length="80"
+                      name="rtt_part_type" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].ExternalColumns[treatment_function_code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8000"
+                      name="treatment_function_code" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].ExternalColumns[total_waiting]"
+                      dataType="i8"
+                      name="total_waiting" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].ExternalColumns[unknown_clock_start_count]"
+                      dataType="i8"
+                      name="unknown_clock_start_count" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].ExternalColumns[total_all]"
+                      dataType="i8"
+                      name="total_all" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].ExternalColumns[WaitsUnder18Weeks]"
+                      dataType="i8"
+                      name="WaitsUnder18Weeks" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].ExternalColumns[WaitsOver18Weeks]"
+                      dataType="i8"
+                      name="WaitsOver18Weeks" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].ExternalColumns[WaitsOver52Weeks]"
+                      dataType="i8"
+                      name="WaitsOver52Weeks" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[reporting_period]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8000"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[reporting_period]"
+                      name="reporting_period" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[provider_org_code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8000"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[provider_org_code]"
+                      name="provider_org_code" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[commissioner_org_code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8000"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[commissioner_org_code]"
+                      name="commissioner_org_code" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[rtt_part_type]"
+                      dataType="wstr"
+                      length="80"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[rtt_part_type]"
+                      name="rtt_part_type" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[treatment_function_code]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8000"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[treatment_function_code]"
+                      name="treatment_function_code" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[total_waiting]"
+                      dataType="i8"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[total_waiting]"
+                      name="total_waiting" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[unknown_clock_start_count]"
+                      dataType="i8"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[unknown_clock_start_count]"
+                      name="unknown_clock_start_count" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[total_all]"
+                      dataType="i8"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[total_all]"
+                      name="total_all" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[WaitsUnder18Weeks]"
+                      dataType="i8"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[WaitsUnder18Weeks]"
+                      name="WaitsUnder18Weeks" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[WaitsOver18Weeks]"
+                      dataType="i8"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[WaitsOver18Weeks]"
+                      name="WaitsOver18Weeks" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[WaitsOver52Weeks]"
+                      dataType="i8"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Error Output].Columns[WaitsOver52Weeks]"
+                      name="WaitsOver52Weeks" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stg_RTT_FactLoad"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[stg].[RTT_FactLoad]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[MKADESINA\SQL2019.NHS_Patient_Flow_BI.sa]"
+                  connectionManagerRefId="Package.ConnectionManagers[MKADESINA\SQL2019.NHS_Patient_Flow_BI.sa]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].Columns[WaitsUnder18Weeks]"
+                      cachedDataType="i8"
+                      cachedName="WaitsUnder18Weeks"
+                      externalMetadataColumnId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].ExternalColumns[WaitsUnder18Weeks]"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[WaitsUnder18Weeks]" />
+                    <inputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].Columns[WaitsOver18Weeks]"
+                      cachedDataType="i8"
+                      cachedName="WaitsOver18Weeks"
+                      externalMetadataColumnId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].ExternalColumns[WaitsOver18Weeks]"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[WaitsOver18Weeks]" />
+                    <inputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].Columns[WaitsOver52Weeks]"
+                      cachedDataType="i8"
+                      cachedName="WaitsOver52Weeks"
+                      externalMetadataColumnId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].ExternalColumns[WaitsOver52Weeks]"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[WaitsOver52Weeks]" />
+                    <inputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].Columns[ReportingPeriodKey]"
+                      cachedDataType="i4"
+                      cachedName="ReportingPeriodKey"
+                      externalMetadataColumnId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].ExternalColumns[ReportingPeriodKey]"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\LKP_DimReportingPeriod.Outputs[Lookup Match Output].Columns[ReportingPeriodKey]" />
+                    <inputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].Columns[ProviderKey]"
+                      cachedDataType="i4"
+                      cachedName="ProviderKey"
+                      externalMetadataColumnId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].ExternalColumns[ProviderKey]"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\LKP_DimProvider.Outputs[Lookup Match Output].Columns[ProviderKey]" />
+                    <inputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].Columns[CommissionerKey]"
+                      cachedDataType="i4"
+                      cachedName="CommissionerKey"
+                      externalMetadataColumnId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].ExternalColumns[CommissionerKey]"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\LKP_DimCommissioner.Outputs[Lookup Match Output].Columns[CommissionerKey]" />
+                    <inputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].Columns[TreatmentFunctionKey]"
+                      cachedDataType="i4"
+                      cachedName="TreatmentFunctionKey"
+                      externalMetadataColumnId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].ExternalColumns[TreatmentFunctionKey]"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\LKP_DimTreatmentFunction.Outputs[Lookup Match Output].Columns[TreatmentFunctionKey]" />
+                    <inputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].Columns[rtt_part_type]"
+                      cachedDataType="wstr"
+                      cachedLength="80"
+                      cachedName="rtt_part_type"
+                      externalMetadataColumnId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].ExternalColumns[RTTPartType]"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[rtt_part_type]" />
+                    <inputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].Columns[total_waiting]"
+                      cachedDataType="i8"
+                      cachedName="total_waiting"
+                      externalMetadataColumnId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].ExternalColumns[TotalWaiting]"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[total_waiting]" />
+                    <inputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].Columns[total_all]"
+                      cachedDataType="i8"
+                      cachedName="total_all"
+                      externalMetadataColumnId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].ExternalColumns[TotalAll]"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[total_all]" />
+                    <inputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].Columns[unknown_clock_start_count]"
+                      cachedDataType="i8"
+                      cachedName="unknown_clock_start_count"
+                      externalMetadataColumnId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].ExternalColumns[UnknownClockStartCount]"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output].Columns[unknown_clock_start_count]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].ExternalColumns[ReportingPeriodKey]"
+                      dataType="i4"
+                      name="ReportingPeriodKey" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].ExternalColumns[ProviderKey]"
+                      dataType="i4"
+                      name="ProviderKey" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].ExternalColumns[CommissionerKey]"
+                      dataType="i4"
+                      name="CommissionerKey" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].ExternalColumns[TreatmentFunctionKey]"
+                      dataType="i4"
+                      name="TreatmentFunctionKey" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].ExternalColumns[RTTPartType]"
+                      dataType="wstr"
+                      length="80"
+                      name="RTTPartType" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].ExternalColumns[TotalWaiting]"
+                      dataType="i8"
+                      name="TotalWaiting" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].ExternalColumns[TotalAll]"
+                      dataType="i8"
+                      name="TotalAll" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].ExternalColumns[UnknownClockStartCount]"
+                      dataType="i8"
+                      name="UnknownClockStartCount" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].ExternalColumns[WaitsUnder18Weeks]"
+                      dataType="i8"
+                      name="WaitsUnder18Weeks" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].ExternalColumns[WaitsOver18Weeks]"
+                      dataType="i8"
+                      name="WaitsOver18Weeks" />
+                    <externalMetadataColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input].ExternalColumns[WaitsOver52Weeks]"
+                      dataType="i8"
+                      name="WaitsOver52Weeks" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\DFT_Load_FactRTTWaitingList.Paths[Lookup Match Output]"
+              endId="Package\DFT_Load_FactRTTWaitingList\LKP_DimProvider.Inputs[Lookup Input]"
+              name="Lookup Match Output"
+              startId="Package\DFT_Load_FactRTTWaitingList\LKP_DimReportingPeriod.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\DFT_Load_FactRTTWaitingList.Paths[Lookup Match Output1]"
+              endId="Package\DFT_Load_FactRTTWaitingList\LKP_DimCommissioner.Inputs[Lookup Input]"
+              name="Lookup Match Output"
+              startId="Package\DFT_Load_FactRTTWaitingList\LKP_DimProvider.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\DFT_Load_FactRTTWaitingList.Paths[Lookup Match Output2]"
+              endId="Package\DFT_Load_FactRTTWaitingList\LKP_DimTreatmentFunction.Inputs[Lookup Input]"
+              name="Lookup Match Output"
+              startId="Package\DFT_Load_FactRTTWaitingList\LKP_DimCommissioner.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\DFT_Load_FactRTTWaitingList.Paths[Lookup Match Output3]"
+              endId="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad.Inputs[OLE DB Destination Input]"
+              name="Lookup Match Output"
+              startId="Package\DFT_Load_FactRTTWaitingList\LKP_DimTreatmentFunction.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\DFT_Load_FactRTTWaitingList.Paths[OLE DB Source Output]"
+              endId="Package\DFT_Load_FactRTTWaitingList\LKP_DimReportingPeriod.Inputs[Lookup Input]"
+              name="OLE DB Source Output"
+              startId="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\End Audit Run - Success"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{3D5EE549-B03A-4615-A063-16D93E9B82F5}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="End Audit Run - Success"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{32D86A4E-F046-4B1C-BB33-7E04C8789C15}"
+          SQLTask:SqlStatementSource="UPDATE audit.ETL_Run_Log&#xA;SET&#xA;    EndTime = SYSDATETIME(),&#xA;    RowsLoaded = (&#xA;        SELECT COUNT(*)&#xA;        FROM dw.FactRTTWaitingList&#xA;    ),&#xA;    RunStatus = 'Success',&#xA;    ErrorMessage = NULL&#xA;WHERE RunID = ?;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::AuditRunID"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Load Final Fact"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{08B1919F-B4BC-4C9F-92FB-34A35AF4291A}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Load Final Fact"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{32D86A4E-F046-4B1C-BB33-7E04C8789C15}"
+          SQLTask:SqlStatementSource="&#xA;SET NOCOUNT ON;&#xA;SET XACT_ABORT ON;&#xA;&#xA;BEGIN TRY&#xA;    BEGIN TRANSACTION;&#xA;&#xA;    -- Stop the load if staging contains duplicate fact keys&#xA;    IF EXISTS&#xA;    (&#xA;        SELECT 1&#xA;        FROM stg.RTT_FactLoad&#xA;        GROUP BY&#xA;            ReportingPeriodKey,&#xA;            ProviderKey,&#xA;            CommissionerKey,&#xA;            TreatmentFunctionKey,&#xA;            RTTPartType&#xA;        HAVING COUNT(*) &gt; 1&#xA;    )&#xA;    BEGIN&#xA;        THROW 50001, 'Duplicate fact grain detected in staging.', 1;&#xA;    END;&#xA;&#xA;    -- Update existing fact records&#xA;    UPDATE f&#xA;    SET&#xA;        f.TotalWaiting = s.TotalWaiting,&#xA;        f.TotalAll = s.TotalAll,&#xA;        f.UnknownClockStartCount = s.UnknownClockStartCount,&#xA;        f.WaitsUnder18Weeks = s.WaitsUnder18Weeks,&#xA;        f.WaitsOver18Weeks = s.WaitsOver18Weeks,&#xA;        f.WaitsOver52Weeks = s.WaitsOver52Weeks&#xA;    FROM dw.FactRTTWaitingList AS f&#xA;    INNER JOIN stg.RTT_FactLoad AS s&#xA;        ON f.ReportingPeriodKey = s.ReportingPeriodKey&#xA;       AND f.ProviderKey = s.ProviderKey&#xA;       AND f.CommissionerKey = s.CommissionerKey&#xA;       AND f.TreatmentFunctionKey = s.TreatmentFunctionKey&#xA;       AND f.RTTPartType = s.RTTPartType;&#xA;&#xA;    -- Insert records not already in the fact table&#xA;    INSERT INTO dw.FactRTTWaitingList&#xA;    (&#xA;        ReportingPeriodKey,&#xA;        ProviderKey,&#xA;        CommissionerKey,&#xA;        TreatmentFunctionKey,&#xA;        RTTPartType,&#xA;        TotalWaiting,&#xA;        TotalAll,&#xA;        UnknownClockStartCount,&#xA;        WaitsUnder18Weeks,&#xA;        WaitsOver18Weeks,&#xA;        WaitsOver52Weeks&#xA;    )&#xA;    SELECT&#xA;        s.ReportingPeriodKey,&#xA;        s.ProviderKey,&#xA;        s.CommissionerKey,&#xA;        s.TreatmentFunctionKey,&#xA;        s.RTTPartType,&#xA;        s.TotalWaiting,&#xA;        s.TotalAll,&#xA;        s.UnknownClockStartCount,&#xA;        s.WaitsUnder18Weeks,&#xA;        s.WaitsOver18Weeks,&#xA;        s.WaitsOver52Weeks&#xA;    FROM stg.RTT_FactLoad AS s&#xA;    WHERE NOT EXISTS&#xA;    (&#xA;        SELECT 1&#xA;        FROM dw.FactRTTWaitingList AS f WITH (UPDLOCK, HOLDLOCK)&#xA;        WHERE f.ReportingPeriodKey = s.ReportingPeriodKey&#xA;          AND f.ProviderKey = s.ProviderKey&#xA;          AND f.CommissionerKey = s.CommissionerKey&#xA;          AND f.TreatmentFunctionKey = s.TreatmentFunctionKey&#xA;          AND f.RTTPartType = s.RTTPartType&#xA;    );&#xA;&#xA;    COMMIT TRANSACTION;&#xA;END TRY&#xA;BEGIN CATCH&#xA;    IF @@TRANCOUNT &gt; 0&#xA;        ROLLBACK TRANSACTION;&#xA;&#xA;    THROW;&#xA;END CATCH;&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Start Audit Run"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{691F86BB-E6DA-470F-AB7E-54738F85AC49}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Start Audit Run"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{32D86A4E-F046-4B1C-BB33-7E04C8789C15}"
+          SQLTask:SqlStatementSource="&#xA;INSERT INTO audit.ETL_Run_Log&#xA;(&#xA;    PackageName,&#xA;    StartTime,&#xA;    RunStatus&#xA;)&#xA;VALUES&#xA;(&#xA;    '03_DFT_Load_FactRTTWaitingList.dtsx',&#xA;    SYSDATETIME(),&#xA;    'Running'&#xA;);&#xA;SELECT CAST(SCOPE_IDENTITY() AS INT) AS AuditRunID;&#xA;&#xA;"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::AuditRunID" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Validate Fact Staging"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{6B91FF77-6426-445E-9FBB-B7F20A9AB32E}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Validate Fact Staging"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{32D86A4E-F046-4B1C-BB33-7E04C8789C15}"
+          SQLTask:SqlStatementSource="&#xA;DECLARE @SourceRows BIGINT;&#xA;DECLARE @StagingRows BIGINT;&#xA;&#xA;SELECT @SourceRows = COUNT_BIG(*)&#xA;FROM stg.RTT_Clean_Work;&#xA;&#xA;SELECT @StagingRows = COUNT_BIG(*)&#xA;FROM stg.RTT_FactLoad;&#xA;&#xA;IF @SourceRows &lt;&gt; @StagingRows&#xA;BEGIN&#xA;    THROW 50002,&#xA;        'Fact staging row count does not match current clean working batch.',&#xA;        1;&#xA;END;&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{0CB27FE9-27D5-466D-8AC8-6B88F4FB9D2D}"
+      DTS:From="Package\Start Audit Run"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Clear Fact Staging" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{CB30B86D-87DF-4FB8-A00E-E9C65D46DE32}"
+      DTS:From="Package\DFT_Load_FactRTTWaitingList"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Validate Fact Staging" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{CFF54B14-B627-4D43-83CC-B79253A1AC9A}"
+      DTS:From="Package\Validate Fact Staging"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Load Final Fact" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{D08D3DA7-B0C3-4902-861E-010DB5D0403B}"
+      DTS:From="Package\Clear Fact Staging"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\DFT_Load_FactRTTWaitingList" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 4]"
+      DTS:CreationName=""
+      DTS:DTSID="{80AEA09F-CA46-484D-9963-E4B5C6D992FB}"
+      DTS:From="Package\Load Final Fact"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 4"
+      DTS:To="Package\End Audit Run - Success" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 5]"
+      DTS:CreationName=""
+      DTS:DTSID="{60B94EE0-BDEC-4F3F-97A4-F49C7DC6366B}"
+      DTS:From="Package\Load Final Fact"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 5"
+      DTS:To="Package\Audit Run - Failure"
+      DTS:Value="1" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="223,42"
+          Id="Package\DFT_Load_FactRTTWaitingList"
+          TopLeft="66,156" />
+        <NodeLayout
+          Size="165,42"
+          Id="Package\Clear Fact Staging"
+          TopLeft="87,90" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\Load Final Fact"
+          TopLeft="92,325" />
+        <NodeLayout
+          Size="178,42"
+          Id="Package\Validate Fact Staging"
+          TopLeft="94,238" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="180.25,198">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,40"
+              Start="0,0"
+              End="0,32.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,32.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="183,280">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-16,45"
+              Start="0,0"
+              End="-16,37.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,18.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,18.5"
+                    Point2="0,22.5"
+                    Point3="-4,22.5" />
+                  <mssgle:LineSegment
+                    End="-12,22.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-12,22.5"
+                    Point2="-16,22.5"
+                    Point3="-16,26.5" />
+                  <mssgle:LineSegment
+                    End="-16,37.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="151,42"
+          Id="Package\Start Audit Run"
+          TopLeft="94,2" />
+        <NodeLayout
+          Size="194,42"
+          Id="Package\End Audit Run - Success"
+          TopLeft="64,416" />
+        <NodeLayout
+          Size="167,42"
+          Id="Package\Audit Run - Failure"
+          TopLeft="322,422" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="169.5,44">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,46"
+              Start="0,0"
+              End="0,38.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,38.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="169.5,132">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="8,24"
+              Start="0,0"
+              End="8,16.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,8" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,8"
+                    Point2="0,12"
+                    Point3="4,12" />
+                  <mssgle:LineSegment
+                    End="4,12" />
+                  <mssgle:CubicBezierSegment
+                    Point1="4,12"
+                    Point2="8,12"
+                    Point3="8,16" />
+                  <mssgle:LineSegment
+                    End="8,16.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 4]"
+          TopLeft="164,367">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,49"
+              Start="0,0"
+              End="0,41.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,41.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 5]"
+          TopLeft="190.666666666667,367">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="214.833333333333,55"
+              Start="0,0"
+              End="214.833333333333,47.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,18.3482849604222" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,18.3482849604222"
+                    Point2="0,22.3482849604222"
+                    Point3="4,22.3482849604222" />
+                  <mssgle:LineSegment
+                    End="210.833333333333,22.3482849604222" />
+                  <mssgle:CubicBezierSegment
+                    Point1="210.833333333333,22.3482849604222"
+                    Point2="214.833333333333,22.3482849604222"
+                    Point3="214.833333333333,26.3482849604222" />
+                  <mssgle:LineSegment
+                    End="214.833333333333,47.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="92.1753190104167,27.3482849604222,30.4826953125,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\DFT_Load_FactRTTWaitingList">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="185,42"
+          Id="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work"
+          TopLeft="86.25,19.75" />
+        <NodeLayout
+          Size="196,42"
+          Id="Package\DFT_Load_FactRTTWaitingList\LKP_DimReportingPeriod"
+          TopLeft="65,101" />
+        <EdgeLayout
+          Id="Package\DFT_Load_FactRTTWaitingList.Paths[OLE DB Source Output]"
+          TopLeft="178.75,61.75">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-15.75,39.25"
+              Start="0,0"
+              End="-15.75,31.75">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,15.625" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,15.625"
+                    Point2="0,19.625"
+                    Point3="-4,19.625" />
+                  <mssgle:LineSegment
+                    End="-11.75,19.625" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-11.75,19.625"
+                    Point2="-15.75,19.625"
+                    Point3="-15.75,23.625" />
+                  <mssgle:LineSegment
+                    End="-15.75,31.75" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="160,42"
+          Id="Package\DFT_Load_FactRTTWaitingList\LKP_DimProvider"
+          TopLeft="72.5,191.25" />
+        <EdgeLayout
+          Id="Package\DFT_Load_FactRTTWaitingList.Paths[Lookup Match Output]"
+          TopLeft="163,143">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-10.5,48.25"
+              Start="0,0"
+              End="-10.5,40.75">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.125" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,20.125"
+                    Point2="0,24.125"
+                    Point3="-4,24.125" />
+                  <mssgle:LineSegment
+                    End="-6.5,24.125" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-6.5,24.125"
+                    Point2="-10.5,24.125"
+                    Point3="-10.5,28.125" />
+                  <mssgle:LineSegment
+                    End="-10.5,40.75" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-53.44138671875,29.125,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="187,42"
+          Id="Package\DFT_Load_FactRTTWaitingList\LKP_DimCommissioner"
+          TopLeft="63,270" />
+        <EdgeLayout
+          Id="Package\DFT_Load_FactRTTWaitingList.Paths[Lookup Match Output1]"
+          TopLeft="154.5,233.25">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,36.75"
+              Start="0,0"
+              End="0,29.25">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29.25" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.19138671875,8.8203125,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="210,42"
+          Id="Package\DFT_Load_FactRTTWaitingList\LKP_DimTreatmentFunction"
+          TopLeft="65,348.75" />
+        <EdgeLayout
+          Id="Package\DFT_Load_FactRTTWaitingList.Paths[Lookup Match Output2]"
+          TopLeft="156.5,312">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="13.5,36.75"
+              Start="0,0"
+              End="13.5,29.25">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,14.375" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,14.375"
+                    Point2="0,18.375"
+                    Point3="4,18.375" />
+                  <mssgle:LineSegment
+                    End="9.5,18.375" />
+                  <mssgle:CubicBezierSegment
+                    Point1="9.5,18.375"
+                    Point2="13.5,18.375"
+                    Point3="13.5,22.375" />
+                  <mssgle:LineSegment
+                    End="13.5,29.25" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-41.44138671875,23.375,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="166,42"
+          Id="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad"
+          TopLeft="71.25,428.75" />
+        <EdgeLayout
+          Id="Package\DFT_Load_FactRTTWaitingList.Paths[Lookup Match Output3]"
+          TopLeft="170,390.75">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-15.75,38"
+              Start="0,0"
+              End="-15.75,30.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,15" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,15"
+                    Point2="0,19"
+                    Point3="-4,19" />
+                  <mssgle:LineSegment
+                    End="-11.75,19" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-11.75,19"
+                    Point2="-15.75,19"
+                    Point3="-15.75,23" />
+                  <mssgle:LineSegment
+                    End="-15.75,30.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-56.06638671875,24,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT_Load_FactRTTWaitingList\SRC_RTT_Clean_Work">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT_Load_FactRTTWaitingList\LKP_DimReportingPeriod">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:boolean">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dw].[DimReportingPeriod]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:int">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT_Load_FactRTTWaitingList\LKP_DimProvider">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:boolean">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dw].[DimProvider]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:int">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT_Load_FactRTTWaitingList\LKP_DimCommissioner">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:boolean">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dw].[DimCommissioner]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:int">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT_Load_FactRTTWaitingList\LKP_DimTreatmentFunction">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:boolean">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dw].[DimTreatmentFunction]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:int">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT_Load_FactRTTWaitingList\stg_RTT_FactLoad">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

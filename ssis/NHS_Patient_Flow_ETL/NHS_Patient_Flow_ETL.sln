@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37614.0 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{C9674DCB-5085-4A16-B785-4C70DD1589BD}") = "NHS_Patient_Flow_ETL", "NHS_Patient_Flow_ETL.dtproj", "{3AEF60E0-29EB-82FB-63D9-124983792C2D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3AEF60E0-29EB-82FB-63D9-124983792C2D}.Development|Default.ActiveCfg = Development
+		{3AEF60E0-29EB-82FB-63D9-124983792C2D}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {319722A2-D362-4666-A0B9-53BF3C0E91DF}
+	EndGlobalSection
+EndGlobal

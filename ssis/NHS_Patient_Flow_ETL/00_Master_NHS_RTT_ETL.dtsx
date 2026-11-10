@@ -1,0 +1,441 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="11/1/2026 12:56:40 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="MKADESINA"
+  DTS:CreatorName="MKADESINA\mkade"
+  DTS:DTSID="{71A0C798-8337-45C8-A378-0773AB15230C}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="17.0.1016.0"
+  DTS:LocaleID="2057"
+  DTS:ObjectName="Package1"
+  DTS:PackageType="5"
+  DTS:VersionBuild="42"
+  DTS:VersionGUID="{F4F1F75B-5B88-4828-A042-5E9BBBC8DF1A}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[MKADESINA\SQL2019.NHS_Patient_Flow_BI.sa]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{E5587F3B-591C-4738-9386-BDCFF6A66135}"
+      DTS:ObjectName="MKADESINA\SQL2019.NHS_Patient_Flow_BI.sa">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=MKADESINA\SQL2019;User ID=sa;Initial Catalog=NHS_Patient_Flow_BI;Provider=SQLNCLI11.1;Persist Security Info=True;Application Name=SSIS-Package1-{E5587F3B-591C-4738-9386-BDCFF6A66135}MKADESINA\SQL2019.NHS_Patient_Flow_BI.sa;Auto Translate=False;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAGXq61w6YOEWQa62YNcX26QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAT6x1+SvzDokPuvT8rPW1lRtPxQcYVAjwRzlznVcpZAAAAAAAOgAAAAAIAACAAAACmSwTt3LTuKb5wu2stYtI2IrVVxIVWpRIMz/ckCEVo8yAAAABoKSmR3QSv+G3zmbSStpu96BmLUABwFcX9QKpysvx4VUAAAABVjQej2mH2hFYD8Yq8l6r1CnOHT+SKMfcGifDJAOt1kJQDU+cYco/BHfbCESHMbGrjvwRcwFXdFpuOGfcwZFNB</DTS:Password>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{0FFE6C48-AC2A-4DD1-9443-846357E21FE9}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="REPLACE(&#xA;    @[User::SourceFilePath],&#xA;    &quot;\\incoming\\&quot;,&#xA;    &quot;\\archive\\&quot;&#xA;)"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ArchiveFilePath">
+      <DTS:VariableValue
+        DTS:DataType="8">C:\Users\mkade\Documents\Healthcare-Data-Analytics\NHS-Patient-Flow-BI-Warehouse\data\landing\archive\20260228-RTT-February-2026-full-extract.csv</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{B6DB6CC0-D66F-449C-A63D-FC1B0FD6450D}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="SUBSTRING(&#xA;    @[User::SourceFilePath],&#xA;    FINDSTRING(@[User::SourceFilePath], &quot;RTT-&quot;, 1),&#xA;    FINDSTRING(@[User::SourceFilePath], &quot;-full-extract&quot;, 1)&#xA;      - FINDSTRING(@[User::SourceFilePath], &quot;RTT-&quot;, 1)&#xA;)"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ReportingPeriod">
+      <DTS:VariableValue
+        DTS:DataType="8">RTT-February-2026</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{1560AB50-6AF7-47AB-A624-347D42E1E097}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SourceFilePath">
+      <DTS:VariableValue
+        DTS:DataType="8">C:\Users\mkade\Documents\Healthcare-Data-Analytics\NHS-Patient-Flow-BI-Warehouse\data\landing\incoming\20260228-RTT-February-2026-full-extract.csv</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Foreach Loop Container"
+      DTS:CreationName="STOCK:FOREACHLOOP"
+      DTS:Description="Foreach Loop Container"
+      DTS:DTSID="{3D89CF8D-D909-4250-A4FF-F415714CC0AD}"
+      DTS:ExecutableType="STOCK:FOREACHLOOP"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Foreach Loop Container">
+      <DTS:ForEachEnumerator
+        DTS:CreationName="Microsoft.ForEachFileEnumerator"
+        DTS:DTSID="{976460DA-C53D-48BF-A5FF-B9A5F4F4FDDB}"
+        DTS:ObjectName="{976460DA-C53D-48BF-A5FF-B9A5F4F4FDDB}">
+        <DTS:ObjectData>
+          <ForEachFileEnumeratorProperties>
+            <FEFEProperty
+              Folder="C:\Users\mkade\Documents\Healthcare-Data-Analytics\NHS-Patient-Flow-BI-Warehouse\data\landing\incoming" />
+            <FEFEProperty
+              FileSpec="*.csv" />
+            <FEFEProperty
+              FileNameRetrievalType="0" />
+            <FEFEProperty
+              Recurse="0" />
+          </ForEachFileEnumeratorProperties>
+        </DTS:ObjectData>
+      </DTS:ForEachEnumerator>
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Foreach Loop Container\01 - Load Raw Staging"
+          DTS:CreationName="Microsoft.ExecutePackageTask"
+          DTS:Description="Execute Package Task"
+          DTS:DTSID="{9F47C0C2-157E-4C1B-843C-20E73C9A2218}"
+          DTS:ExecutableType="Microsoft.ExecutePackageTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="01 - Load Raw Staging"
+          DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <ExecutePackageTask>
+              <UseProjectReference>True</UseProjectReference>
+              <PackageName>01_Load_RTT_Staging.dtsx</PackageName>
+              <ParameterAssignment>
+                <ParameterName>pSourceFilePath</ParameterName>
+                <BindedVariableOrParameterName>User::SourceFilePath</BindedVariableOrParameterName>
+              </ParameterAssignment>
+              <ParameterAssignment>
+                <ParameterName>pReportingPeriod</ParameterName>
+                <BindedVariableOrParameterName>User::ReportingPeriod</BindedVariableOrParameterName>
+              </ParameterAssignment>
+            </ExecutePackageTask>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Foreach Loop Container\02 - Transform and Load Dimensions"
+          DTS:CreationName="Microsoft.ExecutePackageTask"
+          DTS:Description="Execute Package Task"
+          DTS:DTSID="{1200C56B-6F15-47CB-A6C8-60E9A63BB47C}"
+          DTS:ExecutableType="Microsoft.ExecutePackageTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="02 - Transform and Load Dimensions"
+          DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <ExecutePackageTask>
+              <UseProjectReference>True</UseProjectReference>
+              <PackageName>02_Transform_RTT_Staging.dtsx</PackageName>
+              <ParameterAssignment>
+                <ParameterName>pReportingPeriod</ParameterName>
+                <BindedVariableOrParameterName>User::ReportingPeriod</BindedVariableOrParameterName>
+              </ParameterAssignment>
+            </ExecutePackageTask>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Foreach Loop Container\03 - Load Fact Warehouse"
+          DTS:CreationName="Microsoft.ExecutePackageTask"
+          DTS:Description="Execute Package Task"
+          DTS:DTSID="{08D2ACA8-E6EE-4585-94BD-0F7128E75CDF}"
+          DTS:ExecutableType="Microsoft.ExecutePackageTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="03 - Load Fact Warehouse"
+          DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <ExecutePackageTask>
+              <UseProjectReference>True</UseProjectReference>
+              <PackageName>03_DFT_Load_FactRTTWaitingList.dtsx</PackageName>
+              <ParameterAssignment>
+                <ParameterName>pReportingPeriod</ParameterName>
+                <BindedVariableOrParameterName>User::ReportingPeriod</BindedVariableOrParameterName>
+              </ParameterAssignment>
+            </ExecutePackageTask>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Foreach Loop Container\04 - Archive Successfully Processed File"
+          DTS:CreationName="Microsoft.FileSystemTask"
+          DTS:Description="File System Task"
+          DTS:DTSID="{9FBC4622-0181-4284-BB03-94A700C5C8C7}"
+          DTS:ExecutableType="Microsoft.FileSystemTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="04 - Archive Successfully Processed File"
+          DTS:TaskContact="File System Task;Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <FileSystemData
+              TaskOperationType="MoveFile"
+              TaskSourcePath="User::SourceFilePath"
+              TaskIsSourceVariable="True"
+              TaskDestinationPath="User::ArchiveFilePath"
+              TaskIsDestinationVariable="True" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Foreach Loop Container\SQL Commit Historical Staging"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{417FE49A-C6BC-4C19-998B-8B2EB0D8AA25}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Commit Historical Staging"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{E5587F3B-591C-4738-9386-BDCFF6A66135}"
+              SQLTask:SqlStatementSource="SET XACT_ABORT ON;&#xA;&#xA;BEGIN TRY&#xA;    BEGIN TRANSACTION;&#xA;&#xA;IF EXISTS&#xA;(&#xA;    SELECT Period&#xA;    FROM stg.RTT_Raw_Work&#xA;    GROUP BY Period&#xA;    HAVING COUNT(*) &lt;&gt;&#xA;    (&#xA;        SELECT COUNT(*)&#xA;        FROM stg.RTT_Clean_Work&#xA;        WHERE reporting_period =&#xA;              UPPER(stg.RTT_Raw_Work.Period)&#xA;    )&#xA;)&#xA;BEGIN&#xA;    THROW 50001,&#xA;          'RAW and CLEAN row counts do not match. Commit cancelled.',&#xA;          1;&#xA;END;&#xA;&#xA;    -- Preserve historical RAW records.&#xA;    -- Only insert reporting periods not already present.&#xA;    INSERT INTO stg.RTT_Raw&#xA;    SELECT w.*&#xA;    FROM stg.RTT_Raw_Work AS w&#xA;    WHERE NOT EXISTS&#xA;    (&#xA;        SELECT 1&#xA;        FROM stg.RTT_Raw AS h&#xA;        WHERE h.Period = w.Period&#xA;    );&#xA;&#xA;    -- Preserve historical CLEAN records.&#xA;    INSERT INTO stg.RTT_Clean&#xA;    SELECT w.*&#xA;    FROM stg.RTT_Clean_Work AS w&#xA;    WHERE NOT EXISTS&#xA;    (&#xA;        SELECT 1&#xA;        FROM stg.RTT_Clean AS h&#xA;        WHERE h.reporting_period = w.reporting_period&#xA;    );&#xA;&#xA;    COMMIT TRANSACTION;&#xA;END TRY&#xA;BEGIN CATCH&#xA;    IF @@TRANCOUNT &gt; 0&#xA;        ROLLBACK TRANSACTION;&#xA;&#xA;    THROW;&#xA;END CATCH;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Foreach Loop Container\SQL Update RTT Dimensions"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{AC6D8141-83D4-424E-8114-408EDCBCE993}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL Update RTT Dimensions"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{E5587F3B-591C-4738-9386-BDCFF6A66135}"
+              SQLTask:SqlStatementSource="EXEC etl.usp_LoadDimReportingPeriod;&#xA;EXEC etl.usp_LoadDimProvider;&#xA;EXEC etl.usp_LoadDimCommissioner;&#xA;EXEC etl.usp_LoadDimTreatmentFunction;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Foreach Loop Container.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{1664E25C-BCE7-428F-B30D-D6385E0FA096}"
+          DTS:From="Package\Foreach Loop Container\01 - Load Raw Staging"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Foreach Loop Container\02 - Transform and Load Dimensions" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Foreach Loop Container.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{E03690EF-D954-40EF-9F61-77BB338E9F48}"
+          DTS:From="Package\Foreach Loop Container\02 - Transform and Load Dimensions"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\Foreach Loop Container\SQL Commit Historical Staging" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Foreach Loop Container.PrecedenceConstraints[Constraint 2]"
+          DTS:CreationName=""
+          DTS:DTSID="{BCB2B12C-86A0-4325-85B1-7D50FB6CFB50}"
+          DTS:From="Package\Foreach Loop Container\SQL Update RTT Dimensions"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 2"
+          DTS:To="Package\Foreach Loop Container\03 - Load Fact Warehouse" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Foreach Loop Container.PrecedenceConstraints[Constraint 3]"
+          DTS:CreationName=""
+          DTS:DTSID="{1C1D8BF9-ED01-4A49-8771-FD42F331C1D4}"
+          DTS:From="Package\Foreach Loop Container\SQL Commit Historical Staging"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 3"
+          DTS:To="Package\Foreach Loop Container\SQL Update RTT Dimensions" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Foreach Loop Container.PrecedenceConstraints[Constraint 4]"
+          DTS:CreationName=""
+          DTS:DTSID="{B38753BB-3FCB-4CCD-B4A3-BF9EB337438F}"
+          DTS:From="Package\Foreach Loop Container\03 - Load Fact Warehouse"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 4"
+          DTS:To="Package\Foreach Loop Container\04 - Archive Successfully Processed File" />
+      </DTS:PrecedenceConstraints>
+      <DTS:ForEachVariableMappings>
+        <DTS:ForEachVariableMapping
+          DTS:CreationName=""
+          DTS:DTSID="{7D55079A-EE08-4063-8FCB-7A0B62FBDD31}"
+          DTS:ObjectName="{7D55079A-EE08-4063-8FCB-7A0B62FBDD31}"
+          DTS:ValueIndex="0"
+          DTS:VariableName="User::SourceFilePath" />
+      </DTS:ForEachVariableMappings>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="186,44"
+          Id="Package\Foreach Loop Container\01 - Load Raw Staging"
+          TopLeft="35.5,12" />
+        <EdgeLayout
+          Id="Package\Foreach Loop Container.PrecedenceConstraints[Constraint]"
+          TopLeft="125.75,56">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,31"
+              Start="0,0"
+              End="0,23.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="235,42"
+          Id="Package\Foreach Loop Container\02 - Transform and Load Dimensions"
+          TopLeft="5.5,87" />
+        <NodeLayout
+          Size="203,42"
+          Id="Package\Foreach Loop Container\03 - Load Fact Warehouse"
+          TopLeft="10.5,355" />
+        <NodeLayout
+          Size="214,42"
+          Id="Package\Foreach Loop Container\SQL Update RTT Dimensions"
+          TopLeft="9,272" />
+        <EdgeLayout
+          Id="Package\Foreach Loop Container.PrecedenceConstraints[Constraint 2]"
+          TopLeft="114,314">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,41"
+              Start="0,0"
+              End="0,33.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,33.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="222,42"
+          Id="Package\Foreach Loop Container\SQL Commit Historical Staging"
+          TopLeft="2,185" />
+        <EdgeLayout
+          Id="Package\Foreach Loop Container.PrecedenceConstraints[Constraint 1]"
+          TopLeft="123,129">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-10,56"
+              Start="0,0"
+              End="-10,48.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,24" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,24"
+                    Point2="0,28"
+                    Point3="-4,28" />
+                  <mssgle:LineSegment
+                    End="-6,28" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-6,28"
+                    Point2="-10,28"
+                    Point3="-10,32" />
+                  <mssgle:LineSegment
+                    End="-10,48.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Foreach Loop Container.PrecedenceConstraints[Constraint 3]"
+          TopLeft="114.5,227">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,45"
+              Start="0,0"
+              End="0,37.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,37.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="199,42"
+          Id="Package\Foreach Loop Container\04 - Archive Successfully Processed File"
+          TopLeft="17,440" />
+        <EdgeLayout
+          Id="Package\Foreach Loop Container.PrecedenceConstraints[Constraint 4]"
+          TopLeft="114.25,397">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,43"
+              Start="0,0"
+              End="0,35.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,35.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="264,537"
+          Size="264,580"
+          Id="Package\Foreach Loop Container"
+          TopLeft="18,31" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

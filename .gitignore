@@ -22,8 +22,24 @@ bin/
 obj/
 
 # Power BI temporary files
-*.pbix.tmp
+#*.pbix.tmp
 
 # Python temporary files
 __pycache__/
 *.pyc
+
+# Power BI temporary and backup files
+*.pbit.tmp
+*.pbix.tmp
+*.pbix.bak
+
+# Windows temporary files
+Thumbs.db
+Desktop.ini
+*.tmp
+
+# Local credentials and secrets
+*.pfx
+*.key
+*.secrets
+
