@@ -11,8 +11,8 @@
   DTS:LocaleID="2057"
   DTS:ObjectName="Package1"
   DTS:PackageType="5"
-  DTS:VersionBuild="42"
-  DTS:VersionGUID="{F4F1F75B-5B88-4828-A042-5E9BBBC8DF1A}">
+  DTS:VersionBuild="43"
+  DTS:VersionGUID="{B15AE9A4-D74B-4565-9A77-54E1428C3348}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -29,7 +29,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAGXq61w6YOEWQa62YNcX26QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAT6x1+SvzDokPuvT8rPW1lRtPxQcYVAjwRzlznVcpZAAAAAAAOgAAAAAIAACAAAACmSwTt3LTuKb5wu2stYtI2IrVVxIVWpRIMz/ckCEVo8yAAAABoKSmR3QSv+G3zmbSStpu96BmLUABwFcX9QKpysvx4VUAAAABVjQej2mH2hFYD8Yq8l6r1CnOHT+SKMfcGifDJAOt1kJQDU+cYco/BHfbCESHMbGrjvwRcwFXdFpuOGfcwZFNB</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAGXq61w6YOEWQa62YNcX26QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAr2Bev9rcLgc3Uri8UTxEQarx2eRxIBNE+sgSYplJGiwAAAAAOgAAAAAIAACAAAABXWFq05Pl2K7QeWZ1yPSVIOdg8qnVSbbVd1bdlFxGfFSAAAABgYaqk8XWhTJIjJZH84Ik2q+RusqJUTOQzbZqeT3qN3UAAAAArRMaSAIScfjF5NNbHkMqt1dtuM9T6Y6fPoBRFFuBWy3/J4XrOD8tq6Jm7njBbCIwuITzUK6BHGVbnFhcpjiLN</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -430,10 +430,10 @@
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="264,537"
-          Size="264,580"
+          PanelSize="299,533"
+          Size="299,576"
           Id="Package\Foreach Loop Container"
-          TopLeft="18,31" />
+          TopLeft="18,35.2857142857143" />
       </GraphLayout>
     </LayoutInfo>
   </Package>
