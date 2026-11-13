@@ -54,6 +54,29 @@ This project demonstrates an end-to-end healthcare Business Intelligence solutio
 ---
 
 
+## Published Power BI Report
+
+**Publication status:** Published to Microsoft Power BI Service on 13 November 2026.
+
+**Report:** NHS RTT Waiting List & Performance Analytics
+
+The interactive report is available in Power BI Service. Its published navigation contains four audience-facing pages:
+
+1. **Executive Overview** — waiting-list totals, 18-week threshold performance, 52-week waits, trends and provider comparisons.
+2. **Provider Performance** — NHS provider waiting-list volumes and overdue-pathway comparisons.
+3. **Specialty Analysis** — treatment-specialty waiting volumes and 18-week breach rates.
+4. **Monthly Trends** — reporting-month trends, month-on-month changes and waiting-time measures.
+
+The two development and reconciliation pages (Page 1 and Page 2) are hidden from the published page navigation.
+
+**Power BI report link:** Add the exact shareable report URL from Power BI Service here after confirming the intended audience has access. Publishing to a workspace alone does not grant public access.
+
+**Refresh note:** The report has been published; automatic refresh of the SQL Server-backed semantic model is not yet confirmed. An on-premises data gateway and configured refresh credentials/schedule may be required.
+
+**Data interpretation:** NHS RTT extracts contain aggregated pathway counts, not individual patient records.
+
+---
+
 ## Power BI Dashboards
 
 Four interactive report pages provide healthcare performance analysis.
