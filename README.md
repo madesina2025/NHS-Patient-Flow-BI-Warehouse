@@ -9,6 +9,36 @@ The solution integrates monthly NHS RTT CSV extracts using SQL Server Integratio
 
 **Technologies:** SSIS | SQL Server 2019 | T-SQL | Power BI | DAX
 
+
+## Live Power BI Dashboard
+
+**NHS RTT Waiting List & Performance Analytics**
+
+[**View Interactive Power BI Dashboard**](https://app.powerbi.com/view?r=eyJrIjoiM2NiOTgxNGMtMmI1MC00ODIxLWFjNzMtZDhmMzdhMDU1YzhkIiwidCI6ImYxMWQwYzNhLTNjMmUtNDQxYS1iNTdkLTBjZjEwYzJjMTlmNiJ9)
+
+This interactive report analyses NHS Referral to Treatment (RTT) waiting-list performance using publicly available NHS England data.
+
+### Report Pages
+
+| Dashboard | Business Insights |
+|---|---|
+| Executive Overview | Total waiting pathways, 18-week breaches, and NHS performance KPIs |
+| Provider Performance | Compare NHS providers and identify waiting-list pressures |
+| Specialty Analysis | Analyse treatment specialties, breach rates, and waiting volumes |
+| Monthly Trends | Monitor historical performance and month-on-month changes |
+
+### Technology Stack
+
+- **Data Integration:** SQL Server Integration Services (SSIS)
+- **Data Warehouse:** Microsoft SQL Server 2019
+- **Data Transformation:** T-SQL
+- **Business Intelligence:** Power BI Desktop and Power BI Service
+- **Analytics:** DAX measures, KPI reporting, and interactive visualisations
+
+**Data source:** NHS England RTT published statistics.
+
+*The report uses aggregated, historical NHS statistics rather than individual patient records.*
+
 ## Business Objectives
 
 - Analyse incomplete RTT pathways and waiting-list trends.
